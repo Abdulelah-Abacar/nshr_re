@@ -5,7 +5,7 @@
   "main": "gulpfile.js",
   "scripts": {
     "prestart": "rimraf dest",
-    "build": "gulp build",
+    "build": "npx gulp defaultTask",
     "start": "gulp"
   },
   "author": "Hastech",
