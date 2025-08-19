@@ -5,6 +5,7 @@
   "main": "gulpfile.js",
   "scripts": {
     "prestart": "rimraf dest",
+    "build": "gulp build",
     "start": "gulp"
   },
   "author": "Hastech",
