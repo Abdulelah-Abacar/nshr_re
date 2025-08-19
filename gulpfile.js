@@ -21,15 +21,15 @@ var gulp = require("gulp"),
     images: "./src/assets/images/**/*",
   },
   // Destination Folder Locations
-  public = {
-    root: "./public/",
-    css: "./public/assets/css",
-    cssPages: "./public/assets/css/pages",
-    fonts: "./public/assets/fonts/",
-    images: "./public/assets/images/",
-    js: "./public/assets/js",
-    php: "./public/assets/php/",
-    scss: "./public/assets/scss/",
+  dest = {
+    root: "./dest/",
+    css: "./dest/assets/css",
+    cssPages: "./dest/assets/css/pages",
+    fonts: "./dest/assets/fonts/",
+    images: "./dest/assets/images/",
+    js: "./dest/assets/js",
+    php: "./dest/assets/php/",
+    scss: "./dest/assets/scss/",
   };
 
 const postcss = require("gulp-postcss");
@@ -38,14 +38,14 @@ const tailwindcss = require("tailwindcss");
 const PATHS = {
   scss: "./src/assets/scss/style.scss",
   config: "./tailwind.config.js",
-  dist: "./public/assets/css",
+  dist: "./dest/assets/css",
 };
 
 //   gulp.task("style", () => {
 //     return gulp
 //       .src(PATHS.scss)
 //       .pipe(postcss([tailwindcss(PATHS.config), require("autoprefixer")]))
-//       .pipe(gulp.public(PATHS.dist));
+//       .pipe(gulp.dest(PATHS.dist));
 //   });
 
 gulp.task("style", function (done) {
@@ -55,11 +55,11 @@ gulp.task("style", function (done) {
     .pipe(sass().on("error", sass.logError))
     .pipe(concat("style.css"))
     .pipe(autoprefixer())
-    .pipe(gulp.public(PATHS.dist))
+    .pipe(gulp.dest(PATHS.dist))
     .pipe(concat("style.min.css"))
     .pipe(autoprefixer())
     .pipe(cssnano())
-    .pipe(gulp.public(PATHS.dist))
+    .pipe(gulp.dest(PATHS.dist))
     .pipe(browserSync.stream());
 
   done();
@@ -67,7 +67,7 @@ gulp.task("style", function (done) {
 
 /*-- Live Synchronise & Reload --*/
 function liveBrowserSync(done) {
-  browserSync.init({ server: { baseDir: public.root } });
+  browserSync.init({ server: { baseDir: dest.root } });
   done();
 }
 function reload(done) {
@@ -81,7 +81,7 @@ gulp.task("html", function (done) {
     .src(src.html)
     .pipe(fileInclude({ basepath: src.partials }))
     .pipe(beautifyCode())
-    .pipe(gulp.public(public.root));
+    .pipe(gulp.dest(dest.root));
   done();
 });
 
@@ -89,7 +89,7 @@ gulp.task("html", function (done) {
 function copy(folder, done) {
   gulp
     .src(`./src/assets/${folder}/**/*`)
-    .pipe(gulp.public(`./public/assets/${folder}`));
+    .pipe(gulp.dest(`./dest/assets/${folder}`));
   done();
 }
 gulp.task("css", function (done) {
@@ -115,7 +115,7 @@ gulp.task("scss", function (done) {
 		.pipe(sass().on('error', sass.logError))
 		.pipe(concat('bootstrap.min.css'))
 		.pipe(autoprefixer()).pipe(cssnano())
-		.pipe(gulp.public('./public/assets/css/vendor/'))
+		.pipe(gulp.dest('./dest/assets/css/vendor/'))
 		.pipe(browserSync.stream()) 
 	done()
 })
@@ -124,10 +124,10 @@ gulp.task('style', function (done) {
 		.pipe(sass().on('error', sass.logError))
 		.pipe(concat('style.css'))
 		.pipe(autoprefixer())
-		.pipe(gulp.public(public.css))
+		.pipe(gulp.dest(dest.css))
 		.pipe(concat('style.min.css'))
 		.pipe(autoprefixer()).pipe(cssnano())
-		.pipe(gulp.public(public.css))
+		.pipe(gulp.dest(dest.css))
 		.pipe(browserSync.stream()) 
 	done()
 })
@@ -136,10 +136,10 @@ gulp.task('stylePages', function (done) {
 	gulp.src('./src/assets/scss/05-pages/*.scss')
 		.pipe(sass().on('error', sass.logError))
 		.pipe(autoprefixer())
-		.pipe(gulp.public(public.cssPages))
+		.pipe(gulp.dest(dest.cssPages))
 		.pipe(extReplace('.min.css'))
 		.pipe(autoprefixer()).pipe(cssnano())
-		.pipe(gulp.public(public.cssPages))
+		.pipe(gulp.dest(dest.cssPages))
 		.pipe(browserSync.stream()) 
 	done()
 })
@@ -153,13 +153,13 @@ gulp.task("images", function (done) {
     "./src/assets/images/**/*.jpg",
     "./src/assets/images/**/*.jpeg",
   ];
-  gulp.src(imageSrc).pipe(imagemin()).pipe(gulp.public(public.images));
+  gulp.src(imageSrc).pipe(imagemin()).pipe(gulp.dest(dest.images));
   done();
 });
 gulp.task("svgGif", function (done) {
   gulp
     .src(["./src/assets/images/**/*.svg", "./src/assets/images/**/*.gif"])
-    .pipe(gulp.public(public.images));
+    .pipe(gulp.dest(dest.images));
   done();
 });
 
