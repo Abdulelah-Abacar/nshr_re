@@ -4,8 +4,8 @@
   "description": "bary tailwindcss project",
   "main": "gulpfile.js",
   "scripts": {
-    "prestart": "rimraf dest",
-    "build": "npx gulp defaultTask --output dest",
+    "prestart": "rimraf public",
+    "build": "npx gulp defaultTask --output public",
     "start": "gulp"
   },
   "author": "Hastech",
